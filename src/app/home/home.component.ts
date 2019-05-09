@@ -10,12 +10,17 @@ import {Movie} from '../interfaces/movie';
 })
 export class HomeComponent implements OnInit {
 	
-	API_ENDPOINT = 'Http://localhost:8000/api';
 	movies: Movie[];
 
-	constructor(private movieService:MoviesService, private httpClient:HttpClient) { 
+	constructor(private movieService:MoviesService) { 
 
-		httpClient.get(this.API_ENDPOINT+'/movies').subscribe(
+		this.getMovies()
+
+	}
+
+	getMovies(){
+
+		this.movieService.get().subscribe(
 			(data:Movie[]) =>{
 				this.movies = data;
 			}
@@ -24,6 +29,22 @@ export class HomeComponent implements OnInit {
 	}
 
   	ngOnInit() {
+  	}
+
+  	delete(id){
+
+  		if(confirm('¿Seguro que deseas eliminar?')){
+	  			this.movieService.delete(id).subscribe(
+	  			(data) => {
+	  				alert('Elimando con éxito');
+	  				this.getMovies();
+	  			},
+	  			(err) => {
+	  				console.log(err);
+	  			}
+	  		);
+  		}
+
   	}
 
 }

@@ -6,8 +6,13 @@ import {Movie} from '../interfaces/movie';
   providedIn: 'root'
 })
 export class MoviesService {
+
 	API_ENDPOINT = 'Http://localhost:8000/api'
   constructor(private httpClient: HttpClient) { }
+
+  get(){
+      return this.httpClient.get(this.API_ENDPOINT +'/movies');
+  }
 
   save(movie: Movie){
   	const headers = new HttpHeaders({'Content-type': 'application/json'});
@@ -19,5 +24,9 @@ export class MoviesService {
   	const headers = new HttpHeaders({'Content-type': 'application/json'});
 
   	return this.httpClient.put(this.API_ENDPOINT + '/movies/'+movie.id, movie,{headers:headers});
+  }
+
+  delete(id){
+     return this.httpClient.delete(this.API_ENDPOINT+'/movies/'+id); 
   }
 }
